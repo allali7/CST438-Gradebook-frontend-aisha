@@ -6,11 +6,11 @@ import Cookies from 'js-cookie';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import {DataGrid} from '@mui/x-data-grid';
-import {SERVER_URL} from '../constants.js'
+import {SERVER_URL} from '../constants.js';
+//aisha lalli 
+import AddAssignment from './AddAssignment.js';
 
-// NOTE:  for OAuth security, http request must have
-//   credentials: 'include' 
-//
+
 
 class Assignment extends React.Component {
     constructor(props) {
@@ -48,6 +48,8 @@ class Assignment extends React.Component {
     console.log("Assignment.onRadioClick " + event.target.value);
     this.setState({selected: event.target.value});
   }
+
+
   
   render() {
      const columns = [
@@ -58,7 +60,7 @@ class Assignment extends React.Component {
         renderCell: (params) => (
           <div>
           <Radio
-            checked={params.row.id == this.state.selected}
+            checked={params.row.id === this.state.selected}
             onChange={this.onRadioClick}
             value={params.row.id}
             color="default"
@@ -82,6 +84,10 @@ class Assignment extends React.Component {
             <Button component={Link} to={{pathname:'/gradebook',   assignment: assignmentSelected }} 
                     variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
               Grade
+            </Button>
+            <Button id="viewBtn" component={Link} to={{pathname:'/assignments'}} 
+                    variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
+              View All Assignments
             </Button>
             <ToastContainer autoClose={1500} /> 
           </div>

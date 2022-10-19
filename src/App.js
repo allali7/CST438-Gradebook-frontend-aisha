@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Gradebook from './components/Gradebook';
 import Assignment from './components/Assignment';
+import AssignmentList from './components/AssignmentList';
 import {BrowserRouter, Switch,  Route} from 'react-router-dom';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
       <AppBar position="static" color="default">
         <Toolbar>
            <Typography variant="h6" color="inherit">
-            Gradebook
+           <a href="/">Gradebook</a>
            </Typography>
         </Toolbar>
       </AppBar>
@@ -20,6 +21,7 @@ function App() {
        <Switch>
         <Route exact path='/' component={Assignment} />
         <Route path='/gradebook' component={Gradebook} />
+        <Route path='/assignments' component={AssignmentList} />
        </Switch>
       </BrowserRouter>
     </div>
