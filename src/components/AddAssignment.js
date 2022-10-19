@@ -52,7 +52,7 @@ class AddAssignment extends Component {
       render()  { 
         return (
             <div>
-              <Button variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
+              <Button  id="addBtn" variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
                 Add Assignment
               </Button>
               <Dialog open={this.state.open} onClose={this.handleClose}>
