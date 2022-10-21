@@ -7,24 +7,24 @@ import Button from '@mui/material/Button';
 import Cookies from 'js-cookie';
 import {SERVER_URL} from '../constants.js';
 
-// NOTE:  for OAuth security, http request must have
-//   credentials: 'include' 
-//
 
-//  required properties -  assignment
-//  
-//  NOTE: because Gradebook is invoked via <Link> in Assignment.js components
-//  properties are passed as attributes of props.location 
+//   credentials: 'include' 
+/
 //
 class Gradebook extends React.Component {
     constructor(props) {
       super(props);
       console.log("Gradebook.cnstr "+ JSON.stringify(props.location));
-      this.state = {  grades :  [] };
+      //this.state = {  grades :  [] };
+      this.state={
+        grades:[],
+        isStudent:false
+      };
     } 
     
      componentDidMount() {
       this.fetchGrades();
+      this.checkIsStudent();
     }
  
     fetchGrades = () => {
@@ -33,7 +33,8 @@ class Gradebook extends React.Component {
       fetch(`${SERVER_URL}/gradebook/${this.props.location.assignment.assignmentId}`, 
         {  
           method: 'GET', 
-          headers: { 'X-XSRF-TOKEN': token }
+          headers: { 'X-XSRF-TOKEN': token },
+          credentials: 'include',
         } )
       .then((response) => response.json()) 
       .then((responseData) => { 
@@ -69,7 +70,8 @@ class Gradebook extends React.Component {
             method: 'PUT', 
             headers: { 'Content-Type': 'application/json',
                        'X-XSRF-TOKEN': token }, 
-            body: JSON.stringify({assignmentId:this.props.location.assignment.assignmentId,  grades: this.state.grades})
+            credentials: 'include',
+            body: JSON.stringify({assignmentId:this.props.location.assignment.assignmentId,  grades: this.state.grades}),
           } )
       .then(res => {
           if (res.ok) {
@@ -118,6 +120,39 @@ class Gradebook extends React.Component {
       });
       this.setState({grades: newgrades});
     };
+
+    checkIsStudent = () => {
+
+    let isStudent = false;
+    const token = Cookies.get('XSRF-TOKEN');
+
+    fetch(
+        `${SERVER_URL}/student`,
+        {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+                       'X-XSRF-TOKEN': token  },
+            credentials: 'include'
+        })
+        .then((res) => {
+            if (res.status == 200) {
+                isStudent =  true;
+            } else {
+                isStudent =  false;
+            }
+        })
+        .catch(err => {
+            toast.error("Fetch failed.", {
+                position: toast.POSITION.BOTTOM_LEFT
+            });
+            console.error(err);
+            isStudent = false; 
+        })
+        .finally(() => {
+            this.setState({
+                isStudent: isStudent
+            });
+        })        
  
     render() {
        const columns = [
@@ -127,15 +162,19 @@ class Gradebook extends React.Component {
         ];
         
         const assignment = this.props.location.assignment;
-      
+        
+        const isStudent = this.state.isStudent;
+
         return(
             <div className="App">
+              {isStudent && (
               <Grid container>
                 <Grid item align="left">
                    <h4>Assignment: {assignment.assignmentName}</h4>
                    <h4>Course: {assignment.courseTitle}</h4>                   
                 </Grid>
               </Grid>
+              )}
               <div style={{width:'100%'}}>
                 For DEBUG:  display state.
                 {JSON.stringify(this.state)}
