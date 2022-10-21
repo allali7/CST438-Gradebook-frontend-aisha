@@ -10,7 +10,7 @@ import {SERVER_URL} from '../constants.js';
 //aisha lalli 
 import AddAssignment from './AddAssignment.js';
 
-
+//   credentials: 'include' 
 
 class Assignment extends React.Component {
     constructor(props) {
@@ -28,7 +28,8 @@ class Assignment extends React.Component {
     fetch(`${SERVER_URL}/gradebook`, 
       {  
         method: 'GET', 
-        headers: { 'X-XSRF-TOKEN': token }
+        headers: { 'X-XSRF-TOKEN': token },
+        credentials: 'include',
       } )
     .then((response) => response.json()) 
     .then((responseData) => { 

@@ -2,6 +2,7 @@ import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Login from './components/Login';
 import Gradebook from './components/Gradebook';
 import Assignment from './components/Assignment';
 import AssignmentList from './components/AssignmentList';
@@ -19,7 +20,8 @@ function App() {
       </AppBar>
       <BrowserRouter>
        <Switch>
-        <Route exact path='/' component={Assignment} />
+        <Route exact path='/' component={Login} />
+       // <Route exact path='/' component={Assignment} />
         <Route path='/gradebook' component={Gradebook} />
         <Route path='/assignments' component={AssignmentList} />
        </Switch>
